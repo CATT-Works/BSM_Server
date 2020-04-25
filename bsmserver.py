@@ -71,7 +71,7 @@ def push_data(request):
 
 def pull_data(conn, request):
     myMsg = msgObjects.pull_bsm()
-    if args.verbose >=1:
+    if args.verbose >=2:
         print ("PULL:", myMsg)
     myMsg = str.encode(myMsg)
     conn.sendall(myMsg)
@@ -88,17 +88,18 @@ def connection(nr, conn, addr):
     last_received = time()
     global buff
     global counter
-    print ("Connection nr: {}, c: {}, addr: {}".format(nr, conn, addr))
+    if args.verbose >= 1:
+        print ("Connection nr: {}, c: {}, addr: {}".format(nr, conn, addr))
     while True:
         data = conn.recv(args.data_buffer)
-        if args.verbose >= 1 :
+        if args.verbose >= 2 :
             print("Conn {}, addr: {}, Data received: {}".format(nr, addr, data))
         if len(data) == 0:
             if time() - last_received < args.end_thread_time:
                 continue
             else:  # End thread if not conected for a while
                 if args.verbose >= 1:
-                    print ("\nDisconnecting session...")
+                    print ("\nDisconnecting session nr {}.".format(nr))
                 break
         last_received = time()
         request = json.loads(data)
