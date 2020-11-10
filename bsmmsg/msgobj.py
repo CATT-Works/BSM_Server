@@ -115,14 +115,19 @@ class MsgObjects():
             return '{"msg" : ""}'
         return obj.msg
     
-    def get_bsms(self, force_sort = False):
+    def get_bsms(self, last_updated = None, force_sort = False):
         """
         Returns bsm msgs for all objects
-        Arguments: force_sort - if true, then objects are sorted first (default = False)
+        Arguments: 
+            last_updated - if not None (int/float) returns only the objects updated
+                           in last last_updated seconds
+            force_sort   - if true, then objects are sorted first (default = False)
         Returns:   list with bsm msgs in json format
         """
         if force_sort:
             self.sort_objects()
+        if last_updated is not None:
+            return [x.msg for x in self.objects.values() if time() - x.timestamp < last_updated]
         return [x.msg for x in self.objects.values()]
         
     

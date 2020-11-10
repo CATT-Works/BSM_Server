@@ -78,7 +78,10 @@ def pull_data(conn, request):
 
 
 def check_data(conn, request):
-    myMsg = {'msgs': msgObjects.get_bsms()}
+    if 'last_updated' in request:
+        myMsg = {'msgs': msgObjects.get_bsms(last_updated = request['last_updated'])}
+    else:
+        myMsg = {'msgs': msgObjects.get_bsms()}
     myMsg = json.dumps(myMsg)
     myMsg = str.encode(myMsg)
     conn.sendall(myMsg)
