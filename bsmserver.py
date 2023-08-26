@@ -112,8 +112,6 @@ def connection(conn_nr, conn, addr):
         addr (str): connection address
     """
     last_received = time()
-    global buff
-    global counter
     if args.verbose >= 1:
         print(f"Connection nr: {conn_nr}, c: {conn}, addr: {addr}")
     while True:
